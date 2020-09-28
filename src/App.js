@@ -1,26 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import Product from './Product'
 
-function App() {
+const App = () => {
+  const [product, setProduct] = React.useState(null)
+
+  React.useEffect(() => {
+    const localProduct = window.localStorage.getItem('@appreact/product')
+    if(localProduct !== null) setProduct(localProduct)
+  }, [])
+
+  React.useEffect(() => {
+    if(product !== null) window.localStorage.setItem('@appreact/product', product)
+  }, [product])
+
+  function handleClick({target}) {
+    setProduct(target.innerText)
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Preferência: {product}</h1>
+      <button onClick={handleClick} style={{marginRight: '1rem'}}>notebook</button>
+      <button onClick={handleClick}>smartphone</button>
+      <Product product={product} />
     </div>
-  );
-}
+  )
+};
 
 export default App;
