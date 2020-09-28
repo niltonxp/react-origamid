@@ -1,30 +1,26 @@
 import React from "react";
-import Product from './Product'
 
 const App = () => {
-  const [product, setProduct] = React.useState(null)
+  const [cart, setCart] = React.useState(0);
+  const [notification, setNotification] = React.useState(null);
+  const timeoutRef = React.useRef();
 
-  React.useEffect(() => {
-    const localProduct = window.localStorage.getItem('@appreact/product')
-    if(localProduct !== null) setProduct(localProduct)
-  }, [])
+  function handleClick() {
+    setCart(cart + 1);
+    setNotification("Success to add Item");
 
-  React.useEffect(() => {
-    if(product !== null) window.localStorage.setItem('@appreact/product', product)
-  }, [product])
-
-  function handleClick({target}) {
-    setProduct(target.innerText)
+    clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => {
+      setNotification(null);
+    }, 3000);
   }
 
   return (
     <div>
-      <h1>Preferência: {product}</h1>
-      <button onClick={handleClick} style={{marginRight: '1rem'}}>notebook</button>
-      <button onClick={handleClick}>smartphone</button>
-      <Product product={product} />
+      <h1>{notification}</h1>
+      <button onClick={handleClick}>Add to cart {cart}</button>
     </div>
-  )
+  );
 };
 
 export default App;
