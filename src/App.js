@@ -1,35 +1,33 @@
 import React from "react";
-import useFetch from "./useFetch";
-import useLocalStore from "./useLocalStorage";
 
 const App = () => {
-  const [product, setProduct] = useLocalStore("product", "");
-  const { request, data, loading } = useFetch();
+  const [form, setForm] = React.useState({ name: "", email: "" });
 
-  React.useEffect(() => {
-    async function fetchData() {
-      await request("https://ranekapi.origamid.dev/json/api/produto/");
-    }
+  function handleSubmit(e) {
+    e.preventDefault();
+    alert(JSON.stringify(form));
+  }
 
-    fetchData();
-  }, [request]);
+  function handleChange({ target }) {
+    const { id, value } = target;
+    setForm({ ...form, [id]: value });
+  }
 
-  const handleClick = ({ target }) => setProduct(target.innerText);
-
-  if (loading) return <p>Carregando...</p>;
-  if (data)
-    return (
-      <>
-        <p>Produto preferido: {product}</p>
-        <button onClick={handleClick}>notebook</button>
-        <button onClick={handleClick}>smartphone</button>
-
-        {data.map((p) => (
-          <h1 key={p.id}>{p.nome}</h1>
-        ))}
-      </>
-    );
-  else return null;
+  return (
+    <form onSubmit={handleSubmit}>
+      <label htmlFor="name">Nome:</label>
+      <input id="name" type="text" value={form.name} onChange={handleChange} />
+      <label htmlFor="email">Email:</label>
+      <input
+        id="email"
+        type="email"
+        value={form.email}
+        onChange={handleChange}
+      />
+      <br />
+      <button>Enviar</button>
+    </form>
+  );
 };
 
 export default App;
