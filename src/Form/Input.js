@@ -1,7 +1,7 @@
 import React from "react";
 
 function Input(props) {
-  const { id, label, type, value, setValue, ...rest } = props;
+  const { id, label, type, value, onChange, ...rest } = props;
 
   return (
     <>
@@ -12,7 +12,7 @@ function Input(props) {
         name={id}
         type={type || "text"}
         value={value}
-        onChange={({ target }) => setValue(target.value)}
+        onChange={onChange}
       />
     </>
   );

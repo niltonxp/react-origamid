@@ -1,44 +1,53 @@
 import React, { useState } from "react";
-import Checkbox from "./Form/Checkbox";
 import Input from "./Form/Input";
-import Radio from "./Form/Radio";
-import Select from "./Form/Select";
 
 const App = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [product, setProduct] = useState("");
-  const [cor, setCor] = useState("");
-  const [languages, setLanguages] = useState([]);
+  const [cep, setCep] = useState("");
+  const [error, setError] = useState(null);
+
+  function validateCep(value) {
+    if (value.length === 0) {
+      setError("Preencha um valor!");
+      return false;
+    } else if (!/^\d{5}-?\d{3}$/.test(value)) {
+      setError("Preencha um Cep válido!");
+      return false;
+    } else {
+      setError(null);
+      return true;
+    }
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    if (validateCep(cep)) {
+      console.log("Enviar");
+    } else {
+      console.log("Não enviar");
+    }
+  }
+
+  function handleBlur({ target }) {
+    validateCep(target.value);
+  }
+
+  function handleChange({ target }) {
+    if (error) validateCep(target.value);
+    setCep(target.value);
+  }
 
   return (
-    <form>
-      <h2>Checkbox</h2>
-      <Checkbox
-        options={["JS", "PHP"]}
-        value={languages}
-        setValue={setLanguages}
-      />
-
-      <h2>Radio</h2>
-      <Radio options={["Azul", "Red"]} value={cor} setValue={setCor} />
-
-      <h2>Select</h2>
-      <Select
-        options={["teste", "teste1"]}
-        value={product}
-        setValue={setProduct}
-      />
-
-      <h2>Input</h2>
-      <Input id="name" label="Nome" value={name} setValue={setName} />
+    <form onSubmit={handleSubmit}>
       <Input
-        id="email"
-        label="Email"
-        type="email"
-        value={email}
-        setValue={setEmail}
+        id="cep"
+        label="Cep"
+        placeholder="00000-000"
+        value={cep}
+        onChange={handleChange}
+        onBlur={handleBlur}
       />
+      {error && <p>{error}</p>}
+      <button>Enviar</button>
     </form>
   );
 };
