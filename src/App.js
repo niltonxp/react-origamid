@@ -1,25 +1,28 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import "./App.css"
 
-import Header from "./Header";
-import Home from "./Home";
-import Sobre from "./Sobre";
-import Login from "./Login";
-import Produto from "./Produto";
-import NotFound from "./NotFound";
+import Footer from "./Components/Footer/Footer";
+import Header from "./Components/Header/Header";
+import Products from "./Components/Products/Products";
+import Contact from "./Components/Contact/Contact";
+import Product from "./Components/Product/Product";
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="sobre" element={<Sobre />} />
-        <Route path="login" element={<Login />} />
-        <Route path="produto/:id" element={<Produto />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </BrowserRouter>
+    <div className="App">
+      <BrowserRouter>
+        <Header />
+        <div className="content">
+          <Routes>
+            <Route path="/" element={<Products />} />
+            <Route path="/product/:id" element={<Product />} />
+            <Route path="/contact" element={<Contact />} />
+          </Routes>
+        </div>
+        <Footer />
+      </BrowserRouter>
+    </div>
   );
 };
 
